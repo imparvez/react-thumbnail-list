@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Badge</title>
+	<script src="https://fb.me/react-0.13.0.js"></script>
+	<script src="http://fb.me/JSXTransformer-0.13.0.js"></script>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+</head>
+<body>
+	<!--A view which will consist of an another view inserted by react custom made view. Inside the target div our Badge component will get inserted-->
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-5 target">
+				
+			</div>
+		</div>
+	</div>
+</body>
+<!--JSX compiles to JS-->
+<script type="text/jsx">
+	//options = { thumbnailData: [{}, {}, {}, {}]
+	var options = {
+		thumbnailData: [{
+			imageUrl : 'http://formatjs.io/img/react.svg',
+			header: 'Part One Tutorial',
+			descriptions: 'React is the JavaScript framework',
+			title: 'Learn Intro',
+			number: 5
+		},{
+			imageUrl : 'http://formatjs.io/img/react.svg',
+			header: 'Part Two Tutorial',
+			descriptions: 'React is the JavaScript framework',
+			title: 'Learn Components',
+			number: 5
+		},{
+			imageUrl : 'http://formatjs.io/img/react.svg',
+			header: 'Part Three Tutorial',
+			descriptions: 'React is the JavaScript framework',
+			title: 'Learn Views',
+			number: 5
+		}]
+	};
+
+	//Step:1 => All the dynamically placed component should be replaced by curly braces
+	var Badge = React.createClass({
+		render: function() {
+			return <button className="btn btn-primary" type="button">
+			  {this.props.title} <span className="badge">{this.props.number}</span>
+			</button>
+		}
+	});
+
+	var Thumbnail = React.createClass({
+		render: function() {
+			return  <div className="thumbnail">
+		      <img src={this.props.imageUrl} />
+		      <div className="caption">
+		        <h3>{this.props.header}</h3>
+		        <p>{this.props.descriptions}</p>
+		        <p>
+		        	<Badge title={this.props.title} number={this.props.number}/>
+		        </p>
+		      </div>
+		    </div>
+		}
+	});
+
+	var ThumbnailList = React.createClass({
+		render: function() {
+			var list = this.props.thumbnailData.map(function(thumbnailProps){
+				return <Thumbnail {...thumbnailProps} />
+			});
+
+		return <div>{list}</div>
+		}
+	})
+	//{...thumbnailProps} => React have a shortcut to pass an entire objects and not to worry about picking individual objects
+	/*this.props.thumbnailData => 
+		[{
+			imageUrl : 'http://formatjs.io/img/react.svg',
+			header: 'Part One Tutorial',
+			descriptions: 'React is the JavaScript framework',
+			title: 'Learn Intro',
+			number: 5
+		},{
+			imageUrl : 'http://formatjs.io/img/react.svg',
+			header: 'Part Two Tutorial',
+			descriptions: 'React is the JavaScript framework',
+			title: 'Learn Components',
+			number: 5
+		},{
+			imageUrl : 'http://formatjs.io/img/react.svg',
+			header: 'Part Three Tutorial',
+			descriptions: 'React is the JavaScript framework',
+			title: 'Learn Views',
+			number: 5
+		}]
+	*/
+
+	//Step:3 => Now Options object is avaiable inside the Badge componenet
+	var element = React.createElement(ThumbnailList, options);
+
+	//Inserting Badge component inside element having target class
+	React.render(element, document.querySelector('.target'));
+</script>
+</html>
